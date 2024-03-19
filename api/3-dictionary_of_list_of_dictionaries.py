@@ -1,33 +1,56 @@
 #!/usr/bin/python3
+"""
+Export data in the JSON format.
 
-''' Module for retrieving API data'''
+Requirements:
+Records all tasks from all employees
+Format must be: {
+    "USER_ID": [
+        {"username": "USERNAME", "task": "TASK_TITLE", "completed": TASK_COMPLETED_STATUS},
+        {"username": "USERNAME", "task": "TASK_TITLE", "completed": TASK_COMPLETED_STATUS},
+        ...
+    ],
+    "USER_ID": [
+        {"username": "USERNAME", "task": "TASK_TITLE", "completed": TASK_COMPLETED_STATUS},
+        {"username": "USERNAME", "task": "TASK_TITLE", "completed": TASK_COMPLETED_STATUS},
+        ...
+    ]
+}
+File name must be: todo_all_employees.json
+"""
 
 import json
 import requests
-import sys
+from sys import argv
 
-if __name__ == '__main__':
 
-    base_url = 'https://jsonplaceholder.typicode.com/'
-    user_ext = '/users/'
-    todo_ext = '/todos'
+def export_to_json():
+    """
+    Export data to JSON file.
+    """
+    url = "https://jsonplaceholder.typicode.com/users"
+    users = requests.get(url).json()
+    todos_url = "https://jsonplaceholder.typicode.com/todos"
+    todos = requests.get(todos_url).json()
 
-    employees_dict = {}
-    employee_response = requests.get(base_url+user_ext)
-    employees = employee_response.json()
+    user_tasks = {}
 
-    for employee in employees:
-        json_key = "{}".format(employee['id'])
-        employee_json = {json_key: []}
-        todo_response = requests.get(base_url+user_ext+json_key+todo_ext)
-        todos = todo_response.json()
+    for user in users:
+        user_id = user['id']
+        username = user['username']
+        user_tasks[user_id] = []
         for todo in todos:
-            task_dict = {
-                "username": employee['username'],
-                "task": todo['title'],
-                "completed": todo['completed']}
-            employee_json[json_key].append(task_dict)
-        employees_dict.update(employee_json)
+            if todo['userId'] == user_id:
+                task = {
+                    "username": username,
+                    "task": todo['title'],
+                    "completed": todo['completed']
+                }
+                user_tasks[user_id].append(task)
 
-    with open('todo_all_employees.json', 'w') as file:
-        file.write(json.dumps(employees_dict))
+    with open('todo_all_employees.json', 'w') as json_file:
+        json.dump(user_tasks, json_file)
+
+
+if __name__ == "__main__":
+    export_to_json()
