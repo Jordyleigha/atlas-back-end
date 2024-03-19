@@ -1,31 +1,51 @@
 #!/usr/bin/python3
-
-''' Module for retrieving API data'''
-
+"""script that fetches info about a given employee's ID using an api"""
 import json
 import requests
 import sys
 
-if __name__ == '__main__':
+base_url = 'https://jsonplaceholder.typicode.com'
 
-    base_url = 'https://jsonplaceholder.typicode.com/'
-    user_ext = '/users/{}'.format(sys.argv[1])
-    todo_ext = '/todos'
-    file_name = "{}.json".format(sys.argv[1])
+if __name__ == "__main__":
 
-    employee_response = requests.get(base_url+user_ext)
-    employee = employee_response.json()
-    todo_response = requests.get(base_url+user_ext+todo_ext)
-    todos = todo_response.json()
+    user_id = sys.argv[1]
 
-    json_key = "{}".format(employee['id'])
-    employee_json = {json_key: []}
-    for todo in todos:
-        task_dict = {
-            "task": todo['title'],
-            "completed": todo['completed'],
-            "username": employee['username']}
-        employee_json[json_key].append(task_dict)
+    # Get user info e.g https://jsonplaceholder.typicode.com/users/1/
+    user_url = '{}/users?id={}'.format(base_url, user_id)
 
-        with open(file_name, 'w') as file:
-            file.write(json.dumps(employee_json))
+    # Get info from API
+    response = requests.get(user_url)
+    # Parse the data into JSON format
+    data = json.loads(response.text)
+    # Extract user data, in this case, name of employee
+    username = data[0].get('name')
+
+    # Get user info about todo tasks
+    tasks_url = '{}/todos?userId={}'.format(base_url, user_id)
+
+    # Get info from API
+    response = requests.get(tasks_url)
+    # Parse the data into JSON format
+    tasks = json.loads(response.text)
+
+    # Initialize list to store task records
+    task_records = []
+
+    # Loop through tasks and record task data
+    for task in tasks:
+        task_record = {
+            "task": task.get('title'),
+            "completed": task.get('completed'),
+            "username": username
+        }
+        task_records.append(task_record)
+
+    # Create JSON data
+    json_data = {user_id: task_records}
+
+    # Write data to JSON file
+    json_file_name = "{}.json".format(user_id)
+    with open(json_file_name, 'w') as json_file:
+        json.dump(json_data, json_file)
+
+    print("Data exported to", json_file_name)
