@@ -46,7 +46,6 @@ if __name__ == "__main__":
     completed_tasks = []
     # loop through tasks counting number of completed tasks
     for task in tasks:
-
         if task.get('completed'):
             # print("The tasks are: {}\n".format(task))
             completed_tasks.append(task)
@@ -57,3 +56,4 @@ if __name__ == "__main__":
           .format(name, completed, total_tasks))
     for task in completed_tasks:
         print("\t {}".format(task.get('title')))
+        
