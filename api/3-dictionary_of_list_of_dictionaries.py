@@ -25,20 +25,23 @@ File name must be: todo_all_employees.json
 
 import json
 import requests
-from sys import argv
-
 
 def export_to_json():
     """
     Export data to JSON file.
     """
-    url = "https://jsonplaceholder.typicode.com/users"
-    users = requests.get(url).json()
+    # URLs
+    users_url = "https://jsonplaceholder.typicode.com/users"
     todos_url = "https://jsonplaceholder.typicode.com/todos"
+
+    # Fetch data
+    users = requests.get(users_url).json()
     todos = requests.get(todos_url).json()
 
+    # Initialize dictionary to store user tasks
     user_tasks = {}
 
+    # Populate user_tasks dictionary
     for user in users:
         user_id = user['id']
         username = user['username']
@@ -52,9 +55,9 @@ def export_to_json():
                 }
                 user_tasks[user_id].append(task)
 
+    # Write data to JSON file
     with open('todo_all_employees.json', 'w') as json_file:
         json.dump(user_tasks, json_file)
-
 
 if __name__ == "__main__":
     export_to_json()
