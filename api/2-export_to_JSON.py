@@ -48,4 +48,3 @@ if __name__ == "__main__":
         json.dump(json_data, json_file)
 
     print("Data exported to", json_file_name)
-    
