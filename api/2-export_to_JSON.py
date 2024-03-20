@@ -7,6 +7,7 @@ import sys
 base_url = 'https://jsonplaceholder.typicode.com'
 
 if __name__ == "__main__":
+
     user_id = sys.argv[1]
 
     # Get user info e.g https://jsonplaceholder.typicode.com/users/1/
@@ -27,8 +28,23 @@ if __name__ == "__main__":
     # Parse the data into JSON format
     tasks = json.loads(response.text)
 
-    # Check if all tasks are found
-    if len(tasks) == 20:
-        print("All tasks found: OK")
-    else:
-        print("Number of tasks missing:", 20 - len(tasks))
+    # Initialize list to store task records
+    task_records = []
+
+    # Loop through tasks and record task data
+    for task in tasks:
+        task_record = {
+            "task": task.get('title'),
+            "completed": task.get('completed'),
+            "username": username
+        }
+        task_records.append(task_record)
+
+    # Create JSON data
+    json_data = {user_id: task_records}
+    # Write data to JSON file
+    json_file_name = "{}.json".format(user_id)
+    with open(json_file_name, 'w') as json_file:
+        json.dump(json_data, json_file)
+
+    print("Data exported to", json_file_name)
