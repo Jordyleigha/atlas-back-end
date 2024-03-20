@@ -63,5 +63,4 @@ def export_to_json():
 
 if __name__ == "__main__":
     export_to_json()
-
-    # Add a new line chraccter at the end of file
+     # Add a new line chraccter at the end of file
