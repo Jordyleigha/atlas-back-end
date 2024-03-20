@@ -26,6 +26,7 @@ File name must be: todo_all_employees.json
 import json
 import requests
 
+
 def export_to_json():
     """
     Export data to JSON file.
@@ -58,6 +59,7 @@ def export_to_json():
     # Write data to JSON file
     with open('todo_all_employees.json', 'w') as json_file:
         json.dump(user_tasks, json_file)
+
 
 if __name__ == "__main__":
     export_to_json()
