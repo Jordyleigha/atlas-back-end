@@ -42,10 +42,10 @@ if __name__ == "__main__":
 
     # Create JSON data
     json_data = {user_id: task_records}
-
     # Write data to JSON file
     json_file_name = "{}.json".format(user_id)
     with open(json_file_name, 'w') as json_file:
         json.dump(json_data, json_file)
 
     print("Data exported to", json_file_name)
+    
