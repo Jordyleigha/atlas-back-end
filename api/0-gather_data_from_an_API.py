@@ -1,29 +1,59 @@
 #!/usr/bin/python3
-
-"""Python script w/ an API that, for a given employee ID,
-    returns information about his/her TODO list progress"""
-
+"""script that fetches info about a given employee's ID using an api"""
 import json
 import requests
 import sys
 
 
+base_url = 'https://jsonplaceholder.typicode.com'
+
 if __name__ == "__main__":
-    APIURL = "https://jsonplaceholder.typicode.com/"
-    EmployeeName = requests.get(APIURL + '/users/{}'.format(sys.argv[1]))
-    EmployeeJD = EmployeeName.json()
-    ToDos = requests.get(APIURL + "/users/{}".format(sys.argv[1]) + "/todos")
-    ToDosJD = ToDos.json()
+
+    user_id = sys.argv[1]
+
+    # get user info e.g https://jsonplaceholder.typicode.com/users/1/
+    user_url = '{}/users?id={}'.format(base_url, user_id)
+    # print("user url is: {}".format(user_url))
+
+    # get info from api
+    response = requests.get(user_url)
+    # pull data from api
+    data = response.text
+    # parse the data into JSON format
+    data = json.loads(data)
+    # extract user data, in this case, name of employee
+    name = data[0].get('name')
+    # print("id is: {}".format(user_id))
+    # print("name is: {}".format(name))
+
+    # get user info about todo tasks
+    # e.g https://jsonplaceholder.typicode.com/users/1/todos
+    tasks_url = '{}/todos?userId={}'.format(base_url, user_id)
+    # print("tasks url is: {}".format(tasks_url))
+
+    # get info from api
+    response = requests.get(tasks_url)
+    # pull data from api
+    tasks = response.text
+    # parse the data into JSON format
+    tasks = json.loads(tasks)
+
+    # initialize completed count as 0 and find total number of tasks
     completed = 0
-    TotalToDos = 0
-    for ToDo in ToDosJD:
-        TotalToDos = TotalToDos + 1
-        if ToDo["completed"] is True:
-            completed = completed + 1
+    total_tasks = len(tasks)
 
-    print("Employee {0} is done with tasks({1}/{2}):".format(
-        EmployeeJD["name"], completed, TotalToDos))
+    # initialize empty list for completed tasks
+    completed_tasks = []
+    # loop through tasks counting number of completed tasks
+    for task in tasks:
 
-    for ToDo in ToDosJD:
-        if ToDo["completed"] is True:
-            print("\t {}".format(ToDo["title"]))
+        if task.get('completed'):
+            # print("The tasks are: {}\n".format(task))
+            completed_tasks.append(task)
+            completed += 1
+
+    # print the output in the required format
+    print("Employee {} is done with tasks({}/{}):"
+          .format(name, completed, total_tasks))
+    for task in completed_tasks:
+        print("\t {}".format(task.get('title')))
