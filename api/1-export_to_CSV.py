@@ -1,32 +1,26 @@
 #!/usr/bin/python3
 
-''' Module for retrieving API data'''
+"""Exports data to CSV"""
 
 import csv
 import requests
 import sys
 
-if __name__ == '__main__':
 
-    base_url = 'https://jsonplaceholder.typicode.com/'
-    user_ext = '/users/{}'.format(sys.argv[1])
-    todo_ext = '/todos'
-    file_name = "{}.csv".format(sys.argv[1])
-
-    employee_response = requests.get(base_url+user_ext)
-    employee = employee_response.json()
-    todo_response = requests.get(base_url+user_ext+todo_ext)
-    todos = todo_response.json()
-
-    file = open(file_name, 'w')
-    csv_file = csv.writer(file, quoting=csv.QUOTE_ALL)
-    count = 0
-
-    for todo in todos:
-
-        csv_file.writerow([
-            employee['id'],
-            employee['username'],
-            todo['completed'],
-            todo['title']])
-    file.close()
+if __name__ == "__main__":
+    APIURL = "https://jsonplaceholder.typicode.com/"
+    FileName = "{}.csv".format(sys.argv[1])
+    EmployeeName = requests.get(APIURL + "/users/{}".format(sys.argv[1]))
+    EmployeeJD = EmployeeName.json()
+    ToDos = requests.get(APIURL + "/users/{}/todos".format(sys.argv[1]))
+    ToDosJD = ToDos.json()
+    File = open(FileName, "w")
+    CSVF = csv.writer(File, quoting=csv.QUOTE_ALL)
+    for ToDo in ToDosJD:
+        CSVF.writerow([
+            EmployeeJD["id"],
+            EmployeeJD["username"],
+            ToDo["completed"],
+            ToDo["title"]
+            ])
+    File.close()
