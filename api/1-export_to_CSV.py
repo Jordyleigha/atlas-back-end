@@ -27,6 +27,7 @@ if __name__ == "__main__":
     user_name = data[0].get('username')
     # print("id is: {}".format(user_id))
     # print("name is: {}".format(user_name))
+
     # get user info about todo tasks
     # e.g https://jsonplaceholder.typicode.com/users/1/todos
     tasks_url = '{}/todos?userId={}'.format(base_url, user_id)
