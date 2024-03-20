@@ -33,7 +33,6 @@ if __name__ == "__main__":
     tasks = response.text
     # Parse the data into JSON format
     tasks = json.loads(tasks)
-
     # Build the CSV
     builder = ""
     for task in tasks:
