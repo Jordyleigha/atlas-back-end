@@ -6,13 +6,17 @@ Requirements:
 Records all tasks from all employees
 Format must be: {
     "USER_ID": [
-        {"username": "USERNAME", "task": "TASK_TITLE", "completed": TASK_COMPLETED_STATUS},
-        {"username": "USERNAME", "task": "TASK_TITLE", "completed": TASK_COMPLETED_STATUS},
+        {"username": "USERNAME", "task": "TASK_TITLE", 
+        "completed": TASK_COMPLETED_STATUS},
+        {"username": "USERNAME", "task": "TASK_TITLE", 
+        "completed": TASK_COMPLETED_STATUS},
         ...
     ],
     "USER_ID": [
-        {"username": "USERNAME", "task": "TASK_TITLE", "completed": TASK_COMPLETED_STATUS},
-        {"username": "USERNAME", "task": "TASK_TITLE", "completed": TASK_COMPLETED_STATUS},
+        {"username": "USERNAME", "task": "TASK_TITLE", 
+        "completed": TASK_COMPLETED_STATUS},
+        {"username": "USERNAME", "task": "TASK_TITLE", 
+        "completed": TASK_COMPLETED_STATUS},
         ...
     ]
 }
@@ -50,7 +54,5 @@ def export_to_json():
 
     with open('todo_all_employees.json', 'w') as json_file:
         json.dump(user_tasks, json_file)
-
-
 if __name__ == "__main__":
     export_to_json()
