@@ -1,37 +1,40 @@
 #!/usr/bin/python3
-"""script that fetches info about a given employee using an api
-and exports it in csv format
+"""Script that fetches info about a given employee using an API
+and exports it in CSV format.
 """
 import json
 import requests
 import sys
-base_url = 'https://jsonplaceholder.typicode.com'
+
+BASE_URL = 'https://jsonplaceholder.typicode.com'
+
 if __name__ == "__main__":
     user_id = sys.argv[1]
-    # get user info e.g https://jsonplaceholder.typicode.com/users/1/
-    user_url = '{}/users?id={}'.format(base_url, user_id)
-    # print("user url is: {}".format(user_url))
-    # get info from api
+
+    # Get user info, e.g., https://jsonplaceholder.typicode.com/users/1/
+    user_url = '{}/users?id={}'.format(BASE_URL, user_id)
+
+    # Get info from API
     response = requests.get(user_url)
-    # pull data from api
+    # Pull data from API
     data = response.text
-    # parse the data into JSON format
+    # Parse the data into JSON format
     data = json.loads(data)
-    # extract user data, in this case, username of employee
+    # Extract user data, in this case, username of employee
     user_name = data[0].get('username')
-    # print("id is: {}".format(user_id))
-    # print("name is: {}".format(user_name))
-    # get user info about todo tasks
-    # e.g https://jsonplaceholder.typicode.com/users/1/todos
-    tasks_url = '{}/todos?userId={}'.format(base_url, user_id)
-    # print("tasks url is: {}".format(tasks_url))
-    # get info from api
+
+    # Get user info about todo tasks
+    # e.g., https://jsonplaceholder.typicode.com/users/1/todos
+    tasks_url = '{}/todos?userId={}'.format(BASE_URL, user_id)
+
+    # Get info from API
     response = requests.get(tasks_url)
-    # pull data from api
+    # Pull data from API
     tasks = response.text
-    # parse the data into JSON format
+    # Parse the data into JSON format
     tasks = json.loads(tasks)
-    # build the csv
+
+    # Build the CSV
     builder = ""
     for task in tasks:
         builder += '"{}","{}","{}","{}"\n'.format(
