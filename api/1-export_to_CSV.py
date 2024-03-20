@@ -44,4 +44,3 @@ if __name__ == "__main__":
         )
     with open('{}.csv'.format(user_id), 'w', encoding='UTF8') as myFile:
         myFile.write(builder)
-        
